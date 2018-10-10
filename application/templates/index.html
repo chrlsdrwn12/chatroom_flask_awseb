@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+<title>MTC Chat - {{alias}}</title>
+<style>
+    .mainwrapper{margin-left: auto; margin-right:auto;display: block;width: 600px;}
+    #public_messages{height: 300px;border:1px solid #cccccc;padding:1rem;overflow: auto;box-sizing:border-box;}
+    .time{float:right;color: #cccccc;}
+    #username{display:none;}
+    .type_msg{display: flex;}
+    .type_msg button{flex-shrink: 0;width: 50px;}
+    .type_msg input{flex: 1;}
+    .header a{float: right;}
+</style>
+</head>
+
+<body>
+
+<div class="mainwrapper">
+    <p class="header">Hi <strong>{{alias}}</strong> <span id='username'>{{username}}</span> welcome to MTC Chatroom <a href="/logout">Logout</a></p>   
+    <div id="public_messages"></div>
+    
+    <p class="type_msg">
+        <input type="text" id="message"><button id="send">Send</button>
+    </p>
+</div>
+
+
+
+    <script src="{{url_for('static', filename='js/socketio.js')}}"></script>
+    <script src="{{url_for('static', filename='js/jquery.js')}}"></script>
+    <script src="{{url_for('static', filename='js/moment.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            // var socket = io.connect('http://127.0.0.1:8500');
+
+            var socket_messages = io(window.location.protocol + '//' + window.location.host +'/messages');
+
+            $('#send').on('click', function() {
+                var message = $('#message').val();
+                var username = $('#username').text();
+                socket_messages.emit('public_msg', {'message':message, 'username':username, 'time':moment().format('h:mm:ss a')});
+            });
+
+            socket_messages.on('public_msg_res', function(msg) {
+                $('#public_messages').append('<p>@<strong>'+msg.username+':</strong> <br />'+msg.message+'<span class="time">'+msg.time+'</span></p>');
+                
+                //Below code will keep the scroll at the bottom
+                $("#public_messages").stop().animate({scrollTop:$('#public_messages')[0].scrollHeight},800);
+            });
+
+        });
+    </script>
+
+</body>
+</html>

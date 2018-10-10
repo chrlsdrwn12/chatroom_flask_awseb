@@ -1,0 +1,24 @@
+{
+    "users": [
+        {
+            "username": "david",
+            "password": "lean",
+            "alias": "David L."
+        },
+        {
+            "username": "quentin",
+            "password": "tarantino",
+            "alias": "Quentin T."
+        },
+        {
+            "username": "alfred",
+            "password": "hitchcock",
+            "alias": "Alfred H."
+        },
+        {
+            "username": "clint",
+            "password": "eastwood",
+            "alias": "Clint E."
+        }
+    ]
+}
