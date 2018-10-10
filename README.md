@@ -1,1 +1,1 @@
-# chatroom_flask_awseb
+Sample flask application ready for deployment on AWS Beanstalk
